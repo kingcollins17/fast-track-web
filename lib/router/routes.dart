@@ -5,5 +5,6 @@ final routerConfig = GoRouter(
   initialLocation: '/accounts',
   routes: [
     accountRoutes,
+    orgRoutes,
   ],
 );

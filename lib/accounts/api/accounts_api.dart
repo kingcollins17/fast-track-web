@@ -12,9 +12,16 @@ class AccountsApi extends BaseApi {
     String? password,
     String? googleId,
   }) async {
+    cancelRequest();
     final Response(:data, :statusCode) = await dio.post(
-      '$url/accounts/sign_in',
-      data: {'username': username, 'email': email, 'password': password, 'google_id': googleId},
+      '$url/accounts/sign-in',
+      data: {
+        'username': username,
+        'email': email,
+        'password': password,
+        'google_id': googleId,
+      },
+      cancelToken: cancelToken,
     );
 
     if (statusCode == null || statusCode != 200) {
@@ -38,14 +45,16 @@ class AccountsApi extends BaseApi {
     String? password,
     String? fullname,
   }) async {
+    cancelRequest();
     final Response(:data, :statusCode) = await dio.post(
-      '$url/accounts/sign_up',
+      '$url/accounts/sign-up',
       data: {
         'email': email,
         if (password != null) 'password': password,
         if (username != null) 'username': username,
         if (fullname != null) 'fullname': fullname,
       },
+      cancelToken: cancelToken,
     );
     if (statusCode != 200) {
       throw BaseApiException(message: data['detail'], statusCode: statusCode!);

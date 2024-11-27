@@ -19,38 +19,22 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SizedBox(
+    return Scaffold(
+      body: SizedBox(
         width: context.xsize.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
+          //mainAxisAlignment: MainAxisAlignment.center,
           children: [
             spacer(y: spacing * 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                CircleAvatar(
-                    child: Text('F',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ))),
-                spacer(x: spacing),
-                Text(
-                  'FastTrack',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                ),
-              ],
-            ),
             spacer(y: spacing),
-            Expanded(
+            SizedBox(
+              height: context.xsize.height * 0.8,
               child: ValueListenableBuilder(
                   valueListenable: view,
                   builder: (context, value, _) {
                     return PageTransitionSwitcher(
-                      duration: 1000.ms,
+                      duration: 600.ms,
+                      reverse: value == _DisplayedView.signup,
                       transitionBuilder: (child, primary, secondary) => SharedAxisTransition(
                         animation: primary,
                         secondaryAnimation: secondary,

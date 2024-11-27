@@ -38,11 +38,11 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
           password: password,
           fullname: fullname,
         );
-        flusher.notify(message: res, context: context);
+        flusher.notify(res, context: context);
       }
     } catch (e) {
       flusher.notify(
-        message: e is BaseApiException ? e.message : '$e',
+      e is BaseApiException ? e.message : '$e',
         context: context,
       );
     } finally {
@@ -54,13 +54,13 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
   Widget build(BuildContext context) {
     final factor = 0.35;
     return SizedBox(
-      width: context.xsize.width * factor,
+      width: context.xsize.width * 0.9,
       child: Padding(
         padding: const EdgeInsets.only(bottom: spacing * 2),
         child: Form(
           key: formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Create your FastTrack Account',
@@ -71,7 +71,7 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                 'Sign up with FastTrack to start tackling deadlines like a Pro',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: spacing * 2,
+                  fontSize: 14,
                   color: context.colors.onSurface.withOpacity(0.4),
                 ),
               ),
@@ -102,13 +102,16 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
               ),
               spacer(y: spacing * 2),
               FilledButton(
-                      style: button(x: context.xsize.width * factor, fg: Colors.white),
+                style: button(x: context.xsize.width * 0.9, rect: false),
                       onPressed: isLoading.value ? null : signup,
                       child: isLoading.value
                           ? SpinKitRing(size: spacing * 3, lineWidth: 2.0, color: Colors.white)
                           : Text(
                               'Sign up',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ))
                   .left,
               spacer(y: spacing),
@@ -119,13 +122,6 @@ class _SignUpViewState extends ConsumerState<SignUpView> {
                   child: Text('Already have an account? Sign in here'),
                 ),
               ),
-              spacer(y: spacing),
-              FilledButton.icon(
-                  style: button(fg: Colors.white, x: context.xsize.width * factor),
-                  onPressed: () {},
-                  label: Text('Continue with Google'),
-                  icon: HugeIcon(
-                      icon: HugeIcons.strokeRoundedGoogle, color: Colors.white, size: spacing * 2)),
               spacer(y: spacing * 2),
             ],
           ),

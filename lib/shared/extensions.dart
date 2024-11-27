@@ -14,9 +14,7 @@ extension DurationExt on int {
 }
 
 extension ContextExt on BuildContext {
-
   Size get xsize => MediaQuery.of(this).size;
-
 
   ColorScheme get colors => Theme.of(this).colorScheme;
 
@@ -27,8 +25,36 @@ extension ContextExt on BuildContext {
   Uri get uri => GoRouterState.of(this).uri;
 }
 
+extension HelperExt2 on DateTime {
+  String get readable {
+    final dateTime = this;
+    final months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+    final month = months[dateTime.month - 1];
+    final day = dateTime.day;
+    final year = dateTime.year;
+
+    final hour = dateTime.hour % 12 == 0 ? 12 : dateTime.hour % 12;
+    final minute = dateTime.minute.toString().padLeft(2, '0');
+    final period = dateTime.hour >= 12 ? 'PM' : 'AM';
+
+    return '$month $day, $year at $hour:$minute $period';
+  }
+}
+
 extension StateHelperExt<T extends StatefulWidget> on State<T> {
-	
   void attach(ValueNotifier notifier) {
     notifier.addListener(() => setState(() {}));
   }

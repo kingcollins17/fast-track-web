@@ -32,14 +32,16 @@ class _SignInViewState extends ConsumerState<SignInView> {
     final factor = 0.35;
     final authState = ref.watch(authProvider);
     final auth = ref.read(authProvider.notifier);
+    final screen = context.xsize;
+    final media = Breakpoints.media(screen.width);
     return SizedBox(
-      width: context.xsize.width * factor,
+      width: media == Breakpoints.mobile ? screen.width * 0.9 : null,
       child: Padding(
         padding: const EdgeInsets.only(bottom: spacing * 2),
         child: Form(
           key: formKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'Sign In to FastTrack',
@@ -50,7 +52,7 @@ class _SignInViewState extends ConsumerState<SignInView> {
                 'Sign in to your FastTrack account to stay ahead of deadlines',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: spacing * 2,
+                  fontSize: 14,
                   color: context.colors.onSurface.withOpacity(0.4),
                 ),
               ),
@@ -84,13 +86,16 @@ class _SignInViewState extends ConsumerState<SignInView> {
                   }),
               spacer(y: spacing * 2),
               FilledButton(
-                style: button(x: context.xsize.width * factor, fg: Colors.white),
+                style: button(rect: false, x: screen.width * 0.9),
                 onPressed: authState.isLoading
                     ? null
-                    : () => auth.signIn(context: context, formKey: formKey),
+                    : () {
+                        FocusScope.of(context).unfocus();
+                        auth.signIn(context: context, formKey: formKey);
+                      },
                 child: authState.isLoading
                     ? SpinKitRing(color: Colors.white, size: spacing * 3, lineWidth: 2.0)
-                    : Text('Sign in', style: TextStyle(color: Colors.white)),
+                    : Text('Sign in', style: TextStyle(color: Colors.white, fontSize: spacing * 2)),
               ).left,
               spacer(y: spacing),
               GestureDetector(
@@ -101,20 +106,6 @@ class _SignInViewState extends ConsumerState<SignInView> {
                 ),
               ),
               spacer(y: spacing),
-              FilledButton.icon(
-                  style: button(fg: Colors.white, x: context.xsize.width * factor),
-                  onPressed: () {
-                    ref.read(flusherProvider.notifier).notify(
-                          message: 'Hello there',
-                          context: context,
-                        );
-                  },
-                  label: Text('Continue with Google'),
-                  icon: HugeIcon(
-                    icon: HugeIcons.strokeRoundedGoogle,
-                    color: Colors.white,
-                    size: spacing * 2,
-                  )),
               spacer(y: spacing * 2),
             ],
           ),

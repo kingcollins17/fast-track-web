@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'extensions.dart';
 
@@ -11,6 +12,12 @@ extension UIExt on Widget {
   Widget get right => Align(alignment: Alignment.centerRight, child: this);
   Widget get top => Align(alignment: Alignment.topCenter, child: this);
   Widget get bottom => Align(alignment: Alignment.bottomLeft, child: this);
+
+  /// angle is in degrees
+  Widget rotate(double angle) => Transform.rotate(
+        angle: angle * (math.pi / 180.0),
+        child: this,
+      );
 
   Widget get center => Center(child: this);
 }

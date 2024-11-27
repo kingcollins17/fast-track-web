@@ -20,7 +20,7 @@ final dioClientProvider = NotifierProvider<DioClient, Dio>.internal(
 );
 
 typedef _$DioClient = Notifier<Dio>;
-String _$flusherHash() => r'68a8328db506a589b66a77c7792e58ac521ea4a2';
+String _$flusherHash() => r'95795f765d8a1baac963648a802fda4929c4c443';
 
 /// See also [Flusher].
 @ProviderFor(Flusher)

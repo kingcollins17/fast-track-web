@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/editable_text.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:fasttrack_web/shared/shared.dart';
 
@@ -18,7 +18,8 @@ final class AuthState {
   AuthState._({this.accessToken});
 
   @override
-  toString() => 'AuthState{accessToken: ${accessToken?.substring(0, 10)}, isAuthenticated: $isAuthenticated}';
+  toString() =>
+      'AuthState{accessToken: ${accessToken?.substring(0, 10)}, isAuthenticated: $isAuthenticated}';
 }
 
 @Riverpod(keepAlive: true)
@@ -51,11 +52,19 @@ class Auth extends _$Auth with FormControllers {
             email: email.text.trim(),
             password: password.text.trim(),
           );
-          flusher.notify(message: message, context: context);
+          flusher.notify(message, context: context);
           ref.read(dioClientProvider.notifier).authorizeSilently(value);
+          context?.push('/organization');
           return AuthState._(accessToken: value);
         } catch (e) {
-          flusher.notify(message: e is BaseApiException ? e.message : '$e', context: context);
+          flusher.notify(
+            e is BaseApiException
+                ? e.message
+                : e is DioException
+                    ? e.error.toString()
+                    : '$e',
+            context: context,
+          );
           rethrow;
         }
       });

@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'ui.dart';
 import 'util.dart';
@@ -68,21 +67,6 @@ extension ExtractToken on Dio {
   String? get accessToken => options.headers['Authorization']?.toString().split(' ').last;
 }
 
-final class AuthState {
-  final String? accessToken, email, avatar;
-  const AuthState._({this.accessToken, this.email, this.avatar});
-
-  bool get isAuthenticated => !isNotAuthenticated;
-
-  bool get isNotAuthenticated => accessToken == null || accessToken!.isEmpty;
-
-  AuthState copyWith({String? token}) => AuthState._(accessToken: token ?? accessToken);
-
-  @override
-  toString() =>
-      'AuthState<\nisAuthenticated=$isAuthenticated,\nemail=$email,\naccessToken=$accessToken\n>';
-}
-
 @riverpod
 class Flusher extends _$Flusher {
   @override
@@ -91,11 +75,13 @@ class Flusher extends _$Flusher {
   }
 
   void notify(
-      {required String message,
-      Duration? duration,
-      FlushbarPosition? position,
-      double? width,
-      BuildContext? context}) {
+    String message, {
+    Duration? duration,
+    FlushbarPosition? position,
+    double? width,
+    BuildContext? context,
+    bool canDismiss = true,
+  }) {
     duration ??= const Duration(seconds: 4);
 
     final ticker = CustomTickerProvider();
@@ -108,9 +94,13 @@ class Flusher extends _$Flusher {
       //message: message,
       maxWidth: width ?? 320.0,
       borderRadius: const BorderRadius.only(bottomLeft: radius, bottomRight: radius),
-      isDismissible: false,
+      isDismissible: canDismiss,
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
-      messageText: Text(message, style: TextStyle(fontSize: 12, color: Colors.black.withOpacity(0.6),)),
+      messageText: Text(message,
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.black.withOpacity(0.6),
+          )),
       backgroundColor: Colors.white,
       duration: duration,
       showProgressIndicator: true,

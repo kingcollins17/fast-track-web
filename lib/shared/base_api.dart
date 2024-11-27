@@ -14,19 +14,19 @@ abstract class BaseApi {
   BaseApi(
     this.dio, {
     this.url = baseurl,
-    this.timeout = const Duration(seconds: 20),
+    this.timeout = const Duration(seconds: 15),
   });
 
   /// Schedule a cancel operation in the future when timeout is exceeded
   Future<void> cancelRequest([Duration? timeout]) async {
     await Future.delayed(timeout ?? this.timeout);
-    cancelToken.cancel();
+    cancelToken.cancel('Request Timed out!');
     cancelToken = CancelToken();
   }
 
   /// Cancel Ongoing requests immediately
   void cancelRequestNow() {
-    cancelToken.cancel();
+    cancelToken.cancel('Request Timed out!');
     cancelToken = CancelToken();
   }
 }
